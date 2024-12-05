@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="username"><br>
+
+    <select name="group_name">
+        {% for i in all_group %}
+            <option value={{i}}>{{i}}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">submit</button>
+</form>
+</body>
+</html>

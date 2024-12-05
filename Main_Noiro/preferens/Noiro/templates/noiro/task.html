@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    название задачи<br>
+    <input type="text" name="name_task"><br>
+    комент<br>
+    <input type="text" name="comment"><br>
+    группа<br>
+    <select name="board_name">
+        <option value="">( нет )</option>
+        {% for i in boards %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select><br>
+    имя пользователя<br>
+    <input type="text" name="username"><br>
+    <button type="submit">submit</button>
+
+</form>
+</body>
+</html>

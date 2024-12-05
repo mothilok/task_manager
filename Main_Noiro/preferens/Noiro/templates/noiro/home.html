@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ user }}<br>
+    {% if request.user.is_authenticated is False %}
+        <a href="{% url 'login' %}">войти</a><br>
+        <a href="{% url 'registration' %}">регистрация</a><br>
+    {% endif %}
+
+    <a href="{% url 'project' %}">создать проект</a><br>
+
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">выйти</a><br>
+        <a href="{% url 'manage_projects' %}">управление проектами</a><br>
+    {% endif %}
+<h1>главная</h1>
+</body>
+</html>

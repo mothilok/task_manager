@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+registration<br>
+<form action="" method="POST">
+    {% csrf_token %}
+  Имя пользователя<br>
+  <input type="text" name="username"><br>
+  пароль<br>
+  <input type="text" name="password">
+  <button type="submit">submit</button>
+</form>
+<br><br>
+{{ error }}
+{% if error %}
+
+    <h3>такой пользователь существует</h3>
+
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+login<br>
+<h3><a href="{% url 'home'%}">на главную</a></h3>
+<form action="" method="POST">
+    {% csrf_token %}
+    Имя пользователя<br>
+    <input type="text" name="user_name"><br>
+    пароль<br>
+    <input type="text" name="password"><br><br>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

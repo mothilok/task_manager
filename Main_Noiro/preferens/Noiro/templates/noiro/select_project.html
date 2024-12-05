@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+{% csrf_token %}
+{% for i in curent_project %}
+
+    <button type="submit" name="select_project" value='{{ i.id }}'>{{ i.name }}</button>
+
+{% endfor %}
+</form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="name">
+    <select name="project_role">
+        {% for i in roles %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">submit</button>
+</form>
+</body>
+</html>
