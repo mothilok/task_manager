@@ -40,16 +40,22 @@ def project(request):
     if request.user.is_authenticated:
         if request.POST:
             name = request.POST['name']
-            curent_project = models.Project_db(name=name,user_created=request.user)
+            curent_project = models.Project_db(name=name, user_created=request.user)
             curent_project.save()
             role = models.Project_role_db.objects.get(id=1)
             models.Project_user_db(project_id=curent_project, user_id=request.user, role_id=role).save()
+
             context = {'successfully':'successfully'}
             return render(request, 'noiro/project.html',context=context)
 
     else:
         return redirect('login')
     return render(request, 'noiro/project.html')
+
+
+def delite_project(request):
+    return HttpResponse('<h1>twerydgkhu</h1>')
+
 
 def project_user(request):
     if request.user.is_authenticated:
@@ -79,29 +85,41 @@ def manage_projects(request):
         if request.user.project_active == None:
             return  redirect('select_project')
         else:
-
             if request.POST:
-                if request.POST['menu'] == 'select_project':
+                if request.POST['mod'] == 'select_project':
                     models.Custom_user.objects.filter(username=request.user).update(project_active=None)
                     return redirect('select_project')
 
-                elif request.POST['menu'] == 'project_user':
-                    return redirect('project_user')
 
-                elif request.POST['menu'] == 'group':
+                elif request.POST['mod'] == 'group':
+                    context = {'select': 'group'}
+
+                elif request.POST['mod'] == 'create_group':
                     return redirect('group')
-
-                elif request.POST['menu'] == 'user_group':
+                elif request.POST['mod'] == 'add_user_group':
                     return redirect('user_group')
 
-                elif request.POST['menu'] == 'board':
+
+                elif request.POST['mod'] == 'board':
+                    context = {'select': 'board'}
+
+                elif request.POST['mod'] == 'create_board':
                     return redirect('board')
+                elif request.POST['mod'] == 'add_user_board':
+                    return redirect('user_board')
 
-                elif request.POST['menu'] == 'board_user':
-                    return redirect('board_user')
 
-                elif request.POST['menu'] == 'task':
+                elif request.POST['mod'] == 'task':
+                    context={'select':'task'}
+
+                elif request.POST['mod'] == 'create_task':
                     return redirect('task')
+                elif request.POST['mod'] == 'add_user_task':
+                    return redirect('user_task')
+
+                context['curent_project'] = request.user.project_active
+                return render(request, 'noiro/manage_projects.html', context=context)
+
 
         curent_project = request.user.project_active
         data = {'curent_project':curent_project}
@@ -113,14 +131,13 @@ def manage_projects(request):
 def select_project(request):
     if request.user.is_authenticated:
         if request.POST:
-            models.Custom_user.objects.filter(id=request.user.id).update(project_active=request.POST['select_project'])
+            models.Custom_user.objects.filter(id=request.user.id).update(project_active=request.POST['curent_project'])
             return redirect('manage_projects')
-        else:#сделать проверку на роль в проекте
+        else:
 
-            curent_project = models.Project_db.objects.filter(user_created=request.user.id)
-            print(curent_project)
+            projects_user = models.Project_user_db.objects.filter(user_id=request.user.id)
             context = {
-                'curent_project':curent_project
+                'projects_user':projects_user
             }
             return render(request, 'noiro/select_project.html', context=context)
     else:
@@ -130,7 +147,8 @@ def group(request):
     if request.user.is_authenticated:
         if request.user.is_authenticated:
             if request.POST:
-                models.Group_db(name=request.POST['name_group'], project_id=request.user.project_active).save()
+                models.Group_db(name=request.POST['name_group'],
+                                project_id=request.user.project_active).save()
 
                 return render(request, 'noiro/group.html')
         else:
@@ -142,16 +160,27 @@ def group(request):
 def user_group(request):
     if request.user.is_authenticated:
         if request.POST:
+            group_id = models.Group_db.objects.get(name=request.POST['group_name'],
+                                                   project_id=request.user.project_active)
             user_id = models.Custom_user.objects.get(username=request.POST['username'])
-            group_id = models.Group_db.objects.get(name=request.POST['group_name'], project_id=request.user.project_active)
-
-            models.User_groups_db(user_id=user_id, group_id=group_id).save()
-
+            check_user_db = models.User_groups_db.objects.filter(user_id=user_id,
+                                                                 group_id=group_id)
+            # проверка записи в User_groups
+            if not check_user_db:
+                models.User_groups_db(user_id=user_id,
+                                      group_id=group_id).save()
+                role_id = models.Project_role_db.objects.get(id=4)
+                ceheck_proj_user = models.Project_user_db.objects.filter(project_id=request.user.project_active,
+                                                                         user_id=user_id)
+                # проверка есть ли запись в project_user
+                if not ceheck_proj_user:
+                    models.Project_user_db(project_id=request.user.project_active,
+                                           user_id=user_id,
+                                           role_id=role_id).save()
 
         all_group = models.Group_db.objects.filter(project_id=request.user.project_active)
-        context = {
-            'all_group':all_group
-        }
+        context = {'all_group':all_group}
+
         return render(request, 'noiro/user_group.html', context=context)
     else:
         return redirect('login')
@@ -159,11 +188,15 @@ def user_group(request):
 def board(request):
     if request.user.is_authenticated:
         if request.POST:
+
+
             name = request.POST['name']
             project_id = request.user.project_active
             user_created = request.user
 
-            models.Board_db(name=name, project_id=project_id, user_created=user_created).save()
+            models.Board_db(name=name,
+                            project_id=project_id,
+                            user_created=user_created).save()
         return render(request, 'noiro/board.html')
     else:
         return redirect('login')
@@ -175,7 +208,9 @@ def board_user(request):
             user_id = models.Custom_user.objects.get(username=request.POST['username'])
             role_id = models.Project_role_db.objects.get(roles=request.POST['role'])
 
-            models.Board_user_db(board_id=board_id, user_id=user_id, role_id=role_id).save()
+            models.Board_user_db(board_id=board_id,
+                                 user_id=user_id,
+                                 role_id=role_id).save()
 
         boards = models.Board_db.objects.filter(project_id=request.user.project_active)
         roles = models.Project_role_db.objects.order_by('-id')
@@ -188,14 +223,6 @@ def board_user(request):
     else:
         return redirect('login')
 
-# drop
-def add_work_category(request):
-    if request.user.is_authenticated:
-        if request.POST:
-            models.Work_category_db(name=request.POST['name_category'], project_id=request.user.project_active).save()
-        return render(request, 'noiro/add_work_category.html')
-    else:
-        return redirect('login')
 
 def task(request):
     if request.user.is_authenticated:
@@ -217,7 +244,12 @@ def task(request):
 
             task_status = models.Task_status_db.objects.get(id=3)
 
-            models.Task_db(name=name, comment=comment, creator=creator, board_id=board_id, user_task_id=user_task_id, task_status_id=task_status).save()
+            models.Task_db(name=name,
+                           comment=comment,
+                           creator=creator,
+                           board_id=board_id,
+                           user_task_id=user_task_id,
+                           task_status_id=task_status).save()
 
         boards = models.Board_db.objects.filter(project_id=request.user.project_active)
         context = {'boards':boards}

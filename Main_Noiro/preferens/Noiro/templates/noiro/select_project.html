@@ -7,9 +7,9 @@
 <body>
 <form action="" method="POST">
 {% csrf_token %}
-{% for i in curent_project %}
+{% for i in projects_user %}
 
-    <button type="submit" name="select_project" value='{{ i.id }}'>{{ i.name }}</button>
+    <button type="submit" name="curent_project" value='{{ i.project_id.id }}'>{{ i }}</button>
 
 {% endfor %}
 </form>

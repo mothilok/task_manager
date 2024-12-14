@@ -14,19 +14,38 @@
 <form action="" method="POST">
     {% csrf_token %}
 
+
+{% if select == None %}
+
     <div align="right">
-        <button type="submit" name="menu" value='delite_project'>удалить проект</button>
+        <button type="submit" name="mod" value='select_project'>выбрать проект</button>
     </div>
 
-    <button type="submit" name="menu" value='select_project'>выбрать проект</button>
-    <button type="submit" name="menu" value='project_user'>добавить учасников в проект</button>
-    <button type="submit" name="menu" value='group'>добавить группы</button>
-    <button type="submit" name="menu" value='user_group'>добавить участников группы</button>
-    <button type="submit" name="menu" value='board'>добавить доску</button>
-    <button type="submit" name="menu" value='board_user'>добавить учасников доски</button>
-    <button type="submit" name="menu" value='task'>добавить задачу</button>
+        <button type="submit" name="mod" value='group'>группа</button><br><br>
+        <button type="submit" name="mod" value='board'>доска</button><br><br>
+        <button type="submit" name="mod" value='task'>задача</button>
 
 
+{% elif select == 'group' %}
+
+
+    <button type="submit" name="mod" value='create_group'>создать группу</button><br><br>
+    <button type="submit" name="mod" value='add_user_group'>добавить учасников в группу</button><br><br>
+
+
+{% elif select == 'board' %}
+
+    <button type="submit" name="mod" value='create_board'>создать доску</button><br><br>
+    <button type="submit" name="mod" value='add_user_group'>добавить учасников в доску</button><br><br>
+
+
+{% elif select == 'task' %}
+
+    <button type="submit" name="mod" value='create_task'>создать задачу</button><br><br>
+    <button type="submit" name="mod" value='add_user_group'>добавить учасника в задачу</button><br><br>
+
+{% endif %}
 </form>
+
 </body>
 </html>
