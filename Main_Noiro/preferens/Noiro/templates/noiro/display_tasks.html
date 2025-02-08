@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {% for task in tasks %}
+        <button type="submit" name="task" value="{{ task.id }}">{{ task }}</button><br><br>
+    {% endfor %}
+    {% for task_user in tasks_user %}
+        <button type="submit" name="task_user" value="{{ task_user.id }}">{{ task_user }}</button><br><br>
+    {% endfor %}
+</form>
+</body>
+</html>
+
+

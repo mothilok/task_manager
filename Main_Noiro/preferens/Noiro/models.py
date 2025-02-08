@@ -56,6 +56,10 @@ class Board_user_db(models.Model):
     board_id = models.ForeignKey(Board_db, null=True, on_delete=models.CASCADE)
     user_id = models.ForeignKey(Custom_user, null=True, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Project_role_db, on_delete=models.CASCADE)
+    project_id = models.ForeignKey(Project_db, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user_id)
 
 
 class Group_db(models.Model):
@@ -69,6 +73,10 @@ class Group_db(models.Model):
 class User_groups_db(models.Model):
     user_id = models.ForeignKey(Custom_user, on_delete=models.CASCADE)
     group_id = models.ForeignKey(Group_db, on_delete=models.CASCADE)
+    project_id = models.ForeignKey(Project_db, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user_id)
 
 
 class Task_status_db(models.Model):
@@ -78,21 +86,23 @@ class Task_status_db(models.Model):
         return self.name
 
 
-class User_task_db(models.Model):
-    user_id = models.ForeignKey(Custom_user, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.user_id)
-
 class Task_db(models.Model):
     name = models.CharField(max_length=100)
     comment = models.CharField(max_length=100, null=True)
     creator = models.ForeignKey(Custom_user, null=True, on_delete=models.SET_NULL)
     board_id = models.ForeignKey(Board_db, null=True, on_delete=models.SET_NULL)
-    user_task_id = models.ForeignKey(User_task_db, null=True, on_delete=models.SET_NULL)
     task_status_id = models.ForeignKey(Task_status_db, null=True, on_delete=models.SET_NULL)
+    project_id = models.ForeignKey(Project_db, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+class User_task_db(models.Model):
+    user_id = models.ForeignKey(Custom_user, on_delete=models.CASCADE)
+    task_id = models.ForeignKey(Task_db, on_delete=models.CASCADE)
+    project_id = models.ForeignKey(Project_db, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.task_id)
 
 

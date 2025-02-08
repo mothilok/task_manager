@@ -31,18 +31,20 @@
 
     <button type="submit" name="mod" value='create_group'>создать группу</button><br><br>
     <button type="submit" name="mod" value='add_user_group'>добавить учасников в группу</button><br><br>
+    <button type="submit" name="mod" value='display_groups'>посмотреть группы</button><br><br>
 
 
 {% elif select == 'board' %}
 
     <button type="submit" name="mod" value='create_board'>создать доску</button><br><br>
-    <button type="submit" name="mod" value='add_user_group'>добавить учасников в доску</button><br><br>
+    <button type="submit" name="mod" value='add_board_user'>добавить учасников в доску</button><br><br>
+    <button type="submit" name="mod" value='display_boards'>посмотреть доски</button><br><br>
 
 
 {% elif select == 'task' %}
 
     <button type="submit" name="mod" value='create_task'>создать задачу</button><br><br>
-    <button type="submit" name="mod" value='add_user_group'>добавить учасника в задачу</button><br><br>
+    <button type="submit" name="mod" value='display_tasks'>посмотреть задачи</button><br><br>
 
 {% endif %}
 </form>

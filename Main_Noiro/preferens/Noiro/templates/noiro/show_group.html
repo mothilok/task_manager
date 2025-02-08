@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div align="right">
+        <button type="submit" name="mod" value='delite_group'>удалить группу</button>
+    </div>
+</form>
+{{ group.name }}<br>
+{{ group.project_id }}<br>
+{% for user in users %}
+{{ user }}<br>
+{% endfor %}
+</body>
+</html>

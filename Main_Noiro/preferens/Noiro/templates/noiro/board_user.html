@@ -9,6 +9,13 @@
     {% csrf_token %}
     имя пользователя
     <input type="text" name="username">
+    группа
+    <select name="group_name">
+        <option value=''>(нет)</option>
+        {% for i in groups %}
+            <option value="{{ i }}">{{i}}</option>
+        {% endfor %}
+    </select>
     доска
     <select name="board_name">
         {% for i in boards %}

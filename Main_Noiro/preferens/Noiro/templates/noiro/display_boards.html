@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+
+{% for board in boards %}
+    <button type="submit" name="board" value="{{ board.id }}">{{ board }}</button>
+
+{% endfor %}
+</form>
+</body>
+</html>
